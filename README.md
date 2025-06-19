@@ -14,7 +14,7 @@ The infrastructure is deployed in a custom **VPC**, spans **two Availability Zon
 
 ## 🧱 Architecture Diagram
 
-![AWS 3-Tier Architecture](./Chapter4/3tier.png)
+<img width="665" alt="3tier" src="https://github.com/user-attachments/assets/377f01e7-ecfd-4779-a6c2-394961707632" />
 
 ---
 
