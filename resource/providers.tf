@@ -6,8 +6,12 @@ terraform {
       version = ">=4.16.0"
     }
   }
+  backend "s3" {
+    name = "value"
+  }
+  
 }
 
 provider "aws" {
-  region = "ap-south-1"
+  region =var.region
 }
