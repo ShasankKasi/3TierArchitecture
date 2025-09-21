@@ -9,30 +9,21 @@ output "subnets_id" {
   value = { for subnet in aws_subnet.subnet : subnet.tags.Name => subnet.id }
 }
 
-# Ensure only one subnet per AZ (first one if duplicates exist)
+# Pick exactly one public subnet per AZ
 output "public_subnets_id" {
   value = [
-    for subnet in distinct([
-      for s in aws_subnet.subnet : {
-        az = s.availability_zone
-        id = s.id
-      } if lookup(s.tags, "public", false)
-    ]) : subnet.id
+    for az in distinct([for s in aws_subnet.subnet : s.availability_zone if lookup(s.tags, "public", false)]) :
+    one([for s in aws_subnet.subnet : s.id if s.availability_zone == az && lookup(s.tags, "public", false)])
   ]
 }
 
+# Pick exactly one private subnet per AZ
 output "private_subnets_id" {
   value = [
-    for subnet in distinct([
-      for s in aws_subnet.subnet : {
-        az = s.availability_zone
-        id = s.id
-      } if !lookup(s.tags, "public", false)
-    ]) : subnet.id
+    for az in distinct([for s in aws_subnet.subnet : s.availability_zone if !lookup(s.tags, "public", false)]) :
+    one([for s in aws_subnet.subnet : s.id if s.availability_zone == az && !lookup(s.tags, "public", false)])
   ]
 }
-
-
 
 
 output "internetGateway_id"{
