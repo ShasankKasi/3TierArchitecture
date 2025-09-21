@@ -17,7 +17,7 @@ resource "aws_autoscaling_group" "asg"{
         value = var.AutoScalingGroup
         propagate_at_launch = true
     }
-    vpc_zone_identifier = slice(var.private_subnets_id,0,2)
+   vpc_zone_identifier = var.private_subnets_id
 
 }
 

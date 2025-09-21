@@ -1,6 +1,6 @@
 resource "aws_db_subnet_group" "dbsubnet" {
   name       = var.dbsubnetname
-  subnet_ids = slice(var.privatesubnets, length(var.privatesubnets) - 2, length(var.privatesubnets))
+  subnet_ids = var.privatesubnets
 
   tags = {
     Name = var.dbsubnetname
