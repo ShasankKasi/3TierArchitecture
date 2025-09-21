@@ -3,11 +3,12 @@ resource "aws_lb" "loadbalancer" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.SecGroup.id]
-  subnets            = var.public_subnets_id 
+  subnets            = var.public_subnets_id   # pass the fixed public subnets list
   tags = {
-    Name=var.LoadBalancer
+    Name = var.LoadBalancer
   }
 }
+
 
 resource "aws_security_group" "SecGroup"{
     vpc_id = var.vpc_id
