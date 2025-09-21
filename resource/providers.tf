@@ -6,8 +6,15 @@ terraform {
       version = ">=4.16.0"
     }
   }
+  backend "s3" {
+    bucket = "terraformtfstate-3tier"   
+    key    = "terraform.tfstate"    
+    encrypt = true
+}
+
+  
 }
 
 provider "aws" {
-  region = "ap-south-1"
+  region =var.region
 }

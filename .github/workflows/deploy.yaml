@@ -1,0 +1,49 @@
+name: Terraform CI/CD
+
+on:
+  push:
+    branches:
+      - '**'
+    paths:
+      - 'resource/**'
+      - 'module/**'
+  pull_request:
+    paths:
+      - 'resource/**'
+      - 'module/**'
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_DEFAULT_REGION: ap-south-1
+
+    defaults:
+      run:
+        working-directory: ./resource   # Terraform root folder
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.8.5
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan (Non-Main Branches)
+        if: github.ref != 'refs/heads/main'
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply (Main Branch Only)
+        if: github.ref == 'refs/heads/main'
+        run: terraform apply --auto-approve
