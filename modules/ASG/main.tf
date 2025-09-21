@@ -1,24 +1,29 @@
-resource "aws_autoscaling_group" "asg"{
-    name = var.AutoScalingGroup
-    launch_template {
-      id=aws_launch_template.Template.id
-    }
-    min_size = var.autoscalingsizeparameters.minsize
-    max_size = var.autoscalingsizeparameters.maxsize
-    desired_capacity = var.autoscalingsizeparameters.desiredcapacity
-    target_group_arns = [var.target_group_arn]
-    health_check_type = "ELB"
-    force_delete = true
-    lifecycle {
-        create_before_destroy = true
-    }
-    tag {
-        key = "Name"
-        value = var.AutoScalingGroup
-        propagate_at_launch = true
-    }
-   vpc_zone_identifier = var.private_subnets_id
+resource "aws_autoscaling_group" "asg" {
+  name = var.AutoScalingGroup
 
+  launch_template {
+    id = aws_launch_template.Template.id
+  }
+
+  min_size         = var.autoscalingsizeparameters.minsize
+  max_size         = var.autoscalingsizeparameters.maxsize
+  desired_capacity = var.autoscalingsizeparameters.desiredcapacity
+
+  target_group_arns = [var.target_group_arn]
+  health_check_type = "ELB"
+  force_delete      = true
+
+  vpc_zone_identifier = var.private_subnets_id   # pass the fixed private subnets list
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  tag {
+    key                 = "Name"
+    value               = var.AutoScalingGroup
+    propagate_at_launch = true
+  }
 }
 
 
