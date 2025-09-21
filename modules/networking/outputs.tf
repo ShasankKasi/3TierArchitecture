@@ -33,6 +33,8 @@ output "private_subnets_id" {
 }
 
 
+
+
 output "internetGateway_id"{
     value={
         name=aws_internet_gateway.name.tags.Name
