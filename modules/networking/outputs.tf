@@ -10,8 +10,13 @@ output "subnets_id" {
 }
 
 output "public_subnets_id" {
-  value = [ for subnet in aws_subnet.subnet : subnet.id if lookup(subnet.tags, "public", true) ]
+  value = [
+    for az, subnet in {
+      for s in aws_subnet.subnet : s.availability_zone => s if lookup(s.tags, "public", false)
+    } : subnet.id
+  ]
 }
+
 
 output "private_subnets_id" {
   value = [ for subnet in aws_subnet.subnet : subnet.id if lookup(subnet.tags, "public", false) ]
