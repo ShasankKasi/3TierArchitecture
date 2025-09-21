@@ -57,3 +57,4 @@ resource "aws_autoscaling_policy" "asg_policy" {
   cooldown = var.Scalingpolicy.cooldown
   autoscaling_group_name = aws_autoscaling_group.asg.name
 }
+
