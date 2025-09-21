@@ -12,18 +12,26 @@ output "subnets_id" {
 # Pick exactly one public subnet per AZ
 output "public_subnets_id" {
   value = [
-    for az in distinct([for s in aws_subnet.subnet : s.availability_zone if lookup(s.tags, "public", false)]) :
-    one([for s in aws_subnet.subnet : s.id if s.availability_zone == az && lookup(s.tags, "public", false)])
+    for az in distinct([for s in values(aws_subnet.subnet) : s.availability_zone if lookup(s.tags, "public", false)]) :
+    # pick the first subnet in that AZ
+    lookup(
+      {for s in values(aws_subnet.subnet) : s.availability_zone => s.id if s.availability_zone == az && lookup(s.tags, "public", false)},
+      az
+    )
   ]
 }
 
 # Pick exactly one private subnet per AZ
 output "private_subnets_id" {
   value = [
-    for az in distinct([for s in aws_subnet.subnet : s.availability_zone if !lookup(s.tags, "public", false)]) :
-    one([for s in aws_subnet.subnet : s.id if s.availability_zone == az && !lookup(s.tags, "public", false)])
+    for az in distinct([for s in values(aws_subnet.subnet) : s.availability_zone if !lookup(s.tags, "public", false)]) :
+    lookup(
+      {for s in values(aws_subnet.subnet) : s.availability_zone => s.id if s.availability_zone == az && !lookup(s.tags, "public", false)},
+      az
+    )
   ]
 }
+
 
 
 output "internetGateway_id"{
