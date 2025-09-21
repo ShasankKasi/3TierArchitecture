@@ -6,11 +6,11 @@ on:
       - '**'
     paths:
       - 'resource/**'
-      - 'module/**'
+      - 'modules/**'
   pull_request:
     paths:
       - 'resource/**'
-      - 'module/**'
+      - 'modules/**'
 
 jobs:
   terraform:

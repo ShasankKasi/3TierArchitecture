@@ -51,7 +51,7 @@ autoscalingsizeparameters = {
 
 launch_template = {
   name          = "WordPressLaunchTemplate"
-  ami           = "ami-0d6f7f3fa71547f39" # ✅ Valid Amazon Linux 2 AMI for ap-south-1
+  ami           = "ami-01b6d88af12965bb6"
   instance_type = "t2.micro"
 }
 
@@ -60,9 +60,9 @@ dbsubnetname = "testrdsdatabase"
 dbinstance = {
   name                 = "testRDSInstance"
   allocated_storage    = 20
-  engine               = "mysql"
-  engine_version       = "8.0.36"   # ✅ Supported MySQL version
-  instance_class       = "db.t3.micro" # ✅ Compatible instance type
+  engine         = "mysql"
+  engine_version = "8.0.35" # or latest supported
+  instance_class       = "db.t3.micro"
   parameter_group_name = "default.mysql8.0"
 }
 
