@@ -3,6 +3,7 @@ variable "vpc_var" {
     name       = string
     cidr_block = string
   })
+  default = null
 }
 
 
@@ -12,6 +13,7 @@ variable "subnetvar" {
     cidr_block        = string
     availability_zone = string
   }))
+  default = null
 }
 
 variable "internetgatewayname" {
@@ -106,7 +108,7 @@ variable "scaling_policy" {
 }
 variable "Elasticipname" {
   type = string
-
+  default = null
 }
 
 variable "PublicRouteTableName"{
