@@ -1,48 +1,49 @@
 output "networking" {
-  value = {
+  value = var.create && length(module.networking) > 0 ? {
     vpc_id = {
       name = var.vpc_var.name
-      id   = module.networking.vpc_id
+      id   = module.networking[0].vpc_id
     }
-    public_subnets  = module.networking.public_subnets_id
-    private_subnets = module.networking.private_subnets_id
+    public_subnets  = module.networking[0].public_subnets_id
+    private_subnets = module.networking[0].private_subnets_id
     natgateway = {
       name = var.natgatewayname
-      id   = module.networking.natGateway_id
+      id   = module.networking[0].natGateway_id
     }
     internetgateway = {
       name = var.internetgatewayname
-      id   = module.networking.internetGateway_id
+      id   = module.networking[0].internetGateway_id
     }
     elasticip = {
       name = var.Elasticipname
-      id   = module.networking.ElasticIp
+      id   = module.networking[0].ElasticIp
     }
     publicroutetableid = {
       name = var.PublicRouteTableName
-      id   = module.networking.PublicRouteTable_id
+      id   = module.networking[0].PublicRouteTable_id
     }
     privateroutetableid = {
       name = var.PrivateRouteTableName
-      id   = module.networking.PrivateRouteTable_id
+      id   = module.networking[0].PrivateRouteTable_id
     }
-  }
+  } : {}
 }
 
 output "Loadbalancer" {
-  value = {
-    LoadBalancerid  = module.ALB.loadbalancer
-    SecurityGroupid = module.ALB.securitygroup
-  }
+  value = var.create && length(module.ALB) > 0 ? {
+    LoadBalancerid  = module.ALB[0].loadbalancer
+    SecurityGroupid = module.ALB[0].securitygroup
+  } : {}
 }
+
 output "AutoScalingGroupId" {
-  value = module.ASG.asg
+  value = var.create && length(module.ASG) > 0 ? module.ASG[0].asg : {}
 }
 
 output "Database" {
-  value = {
-    name      = module.Database.Database.name
-    id        = module.Database.Database.id
-    subnet_id = module.Database.Database_subnet
-  }
+  value = var.create && length(module.Database) > 0 ? {
+    name      = module.Database[0].Database.name
+    id        = module.Database[0].Database.id
+    subnet_id = module.Database[0].Database_subnet
+  } : {}
 }
